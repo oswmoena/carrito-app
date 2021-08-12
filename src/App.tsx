@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from 'react';
+import { Redirect, Router, Switch } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { AboutUs, HomePage } from './views';
+import RouteLayout from './layouts/RouteLayout';
+import { CartProvider } from './context/CartContext';
 
-function App() {
+const hist = createBrowserHistory();
+
+const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CartProvider>
+        <Router history={hist}>
+          <Switch>
+            <RouteLayout fullCover={false} component={HomePage} exact path="/" />
+            <RouteLayout fullCover={false} component={AboutUs} exact path="/about-us" />
+            <RouteLayout path="*">
+              <Redirect to="/" />
+            </RouteLayout>
+          </Switch>
+        </Router>
+      </CartProvider>
+    </>
   );
-}
+};
 
 export default App;
